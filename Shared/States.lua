@@ -1,7 +1,7 @@
 local State = {
     Idle = {
-        local antiIdleActive = false
-        local idleConnection
+        antiIdleActive = false
+        idleConnection
     },
 
     ESP = {
