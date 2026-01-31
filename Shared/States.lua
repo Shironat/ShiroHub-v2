@@ -1,4 +1,9 @@
 local State = {
+    Idle = {
+        local antiIdleActive = false
+        local idleConnection
+    },
+
     ESP = {
         Enabled = true,
         MaxDistance = 400,
@@ -15,6 +20,7 @@ local State = {
     Loaded = {
         Dex = false,
         Spy = false,
+        Key = falar,
         Inf = false
     }
 }
