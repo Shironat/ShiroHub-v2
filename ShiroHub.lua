@@ -13,11 +13,11 @@ local Tabs = {
 }
 
 local Modules = {
-    Exploits = require(script.Modules.Tabs.Exploits),
-    Inject   = require(script.Modules.Tabs.Inject),
-    Logs = require(script.Modules.Tabs.Logs),
-    District = require(script.Modules.Tabs.District),
-    Tsunami = require(script.Modules.Tabs.Tsunami)
+    Exploits = require(script.Tabs.Exploits),
+    Inject   = require(script.Tabs.Inject),
+    Logs = require(script.Tabs.Logs),
+    District = require(script.Tabs.District),
+    Tsunami = require(script.Tabs.Tsunami)
 }
 
 for name, module in pairs(Modules) do
