@@ -1,6 +1,6 @@
 local State = {
     Idle = {
-        antiIdleActive = false
+        antiIdleActive = false,
         idleConnection
     },
 
