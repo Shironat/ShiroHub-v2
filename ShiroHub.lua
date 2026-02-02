@@ -10,7 +10,7 @@ Tabs.Exploits = Window:CreateTab("Exploits")
 Tabs.Inject   = Window:CreateTab("Injection")
 Tabs.Logs     = Window:CreateTab("Logs")
 
-print("Tabs Carregadas")
+print("Carregadando módulos...")
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
 print("[OK]")
