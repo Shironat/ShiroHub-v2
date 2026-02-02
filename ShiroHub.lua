@@ -3,7 +3,7 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local Window = Rayfield:CreateWindow({ Name = "ShiroHub v2" })
 
-print("Carregando Tabs")
+print("Carregando Tabs...")
 local Tabs = {
     Exploits = Window:CreateTab("Exploits"),
     Inject   = Window:CreateTab("Injection"),
@@ -11,7 +11,7 @@ local Tabs = {
 }
 print("Tabs Carregadas")
 
-print("Carregando Módulos")
+print("Carregando Módulos...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Inject.lua"))()(Tabs.Inject)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Logs.lua"))()(Tabs.Logs)
