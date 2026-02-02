@@ -1,28 +1,36 @@
-local LogsLogic = {}
+return function(Tab)
+    local ScrollingFrame = Instance.new("ScrollingFrame")
+    ScrollingFrame.Size = UDim2.new(1, 0, 0.8, 0)
+    ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
+    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    ScrollingFrame.BorderSizePixel = 0
+    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 5, 0)
+    ScrollingFrame.ScrollBarThickness = 6
+    ScrollingFrame.Parent = Tab:GetContentFrame() -- Adiciona na aba
 
-function LogsLogic.CreateTerminal(Tab)
-    local TerminalBox = Tab:CreateTextBox({
-        Name = "Console",
-        Text = "",
-        PlaceholderText = "Logs do ShiroHub...",
-        MultiLine = true,
-        ClearTextOnFocus = false,
-        TextSize = 14,
-        TextColor = Color3.fromRGB(255,255,255),
-        BackgroundColor = Color3.fromRGB(30,30,30),
-        ScrollBarThickness = 6,
-        Size = UDim2.new(1, 0, 0.8, 0), -- 80% da aba
-        Callback = function(value)
-            print("Comando", value)
-        end
-    })
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Parent = ScrollingFrame
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 2)
+
+    local LogsLogic = {}
 
     function LogsLogic.PrintLine(msg)
-        TerminalBox.Text = TerminalBox.Text .. msg .. "\n"
-        TerminalBox.CursorPosition = #TerminalBox.Text + 1
+        local Label = Instance.new("TextLabel")
+        Label.Size = UDim2.new(1, -10, 0, 20)
+        Label.BackgroundTransparency = 1
+        Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Label.TextSize = 14
+        Label.TextXAlignment = Enum.TextXAlignment.Left
+        Label.Text = msg
+        Label.Parent = ScrollingFrame
+
+        ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y)
     end
 
-    return TerminalBox
-end
+    -- Teste
+    LogsLogic.PrintLine("ShiroHub Logs iniciado!")
+    LogsLogic.PrintLine("Logs vão aparecer aqui...")
 
-return LogsLogic
+    return LogsLogic
+end
