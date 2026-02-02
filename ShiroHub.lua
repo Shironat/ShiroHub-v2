@@ -9,8 +9,9 @@ local Tabs = {
     Inject   = Window:CreateTab("Injection"),
     Logs     = Window:CreateTab("Logs"),
 }
+print("Tabs Carregadas")
 
--- carrega módulos REMOTAMENTE
+print("Carregando Módulos")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Inject.lua"))()(Tabs.Inject)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Logs.lua"))()(Tabs.Logs)
