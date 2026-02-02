@@ -12,18 +12,17 @@ local Remote = ReplicatedStorage
 
 local Bases = workspace:WaitForChild("Bases")
 
---Criar Lógica, coletar dinheiro.
+--Criar Lógica, coletar dinheir
 local TsunamiLogic = {}
 
 -- Estados internos
 local Ativo = false
 local MinhaBase = nil
 local valorAtual = 1
-local VALOR_MAX = 999
+local VALOR_MAX = 10
 local intervalo = 0.1
 local acumulador = 0
 
--- 🔎 Busca a base do jogador
 local function BuscarMinhaBase()
     for _, base in ipairs(Bases:GetChildren()) do
         if base:IsA("Model") then
@@ -37,7 +36,7 @@ local function BuscarMinhaBase()
                 ) then
 
                 MinhaBase = base
-                print("[Tsunami] Base encontrada:", MinhaBase.Name)
+                print("Base:", MinhaBase.Name)
                 return true
             end
         end
@@ -45,7 +44,6 @@ local function BuscarMinhaBase()
     return false
 end
 
--- 🔁 Tentativas iniciais para achar a base
 local function ResolverBase()
     for tentativa = 1, 10 do
         if BuscarMinhaBase() then
@@ -54,11 +52,10 @@ local function ResolverBase()
         task.wait(0.5)
     end
 
-    warn("[Tsunami] Base NÃO encontrada")
+    warn("Base nao encontrada")
     return false
 end
 
--- 💸 Loop principal
 RunService.Heartbeat:Connect(function(dt)
     if not Ativo then return end
     if not MinhaBase then return end
@@ -85,7 +82,6 @@ RunService.Heartbeat:Connect(function(dt)
     end
 end)
 
--- 🎛 Toggle externo (para Rayfield)
 function TsunamiLogic.Toggle(state)
     Ativo = state
 
@@ -99,7 +95,6 @@ function TsunamiLogic.Toggle(state)
     end
 end
 
--- Reset manual se quiser
 function TsunamiLogic.ResetBase()
     MinhaBase = nil
     ResolverBase()
