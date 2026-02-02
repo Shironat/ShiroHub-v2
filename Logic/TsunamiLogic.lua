@@ -86,12 +86,10 @@ function TsunamiLogic.Toggle(state)
     Ativo = state
 
     if state then
-        print("[Tsunami] Ativado")
         if not MinhaBase then
             ResolverBase()
         end
     else
-        print("[Tsunami] Desativado")
     end
 end
 
