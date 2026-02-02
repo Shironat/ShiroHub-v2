@@ -1,7 +1,6 @@
 print("Logs.lua carregando")
 
 return function(Tab)
-    print("Logs inicializada")
 
     -- Se precisar de lógica externa
     -- local Logic = loadstring(game:HttpGet("LINK_DA_LOGICA.lua"))()
