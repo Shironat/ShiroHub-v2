@@ -6,20 +6,24 @@ local Window = Rayfield:CreateWindow({
 
 local Tabs = {
     Exploits = Window:CreateTab("Exploits"),
-    Inject = Window:CreateTab("Injection"),
-    Logs = Window:CreateTab("Logs"),
+    Inject   = Window:CreateTab("Injection"),
+    Logs     = Window:CreateTab("Logs"),
     District = Window:CreateTab("District"),
-    Tsunami = Window:CreateTab("Tsunami")
+    Tsunami  = Window:CreateTab("Tsunami")
 }
 
+local Root = script.Parent
+
 local Modules = {
-    Exploits = require(script.Parent.Tabs.Exploits),
-    Inject   = require(script.Parent.Tabs.Inject),
-    Logs = require(script.Parent.Tabs.Logs),
-    District = require(script.Parent.Tabs.District),
-    Tsunami = require(script.Parent.Tabs.Tsunami)
+    Exploits = require(Root.Tabs.Exploits),
+    Inject   = require(Root.Tabs.Inject),
+    Logs     = require(Root.Tabs.Logs),
+    District = require(Root.Tabs.District),
+    Tsunami  = require(Root.Tabs.Tsunami)
 }
 
 for name, module in pairs(Modules) do
-    module.Init(Window, Tabs[name])
+    if module.Init then
+        module.Init(Tabs[name])
+    end
 end
