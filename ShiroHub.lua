@@ -12,6 +12,7 @@ Tabs.Inject   = Window:CreateTab("Injection")
 Tabs.Logs     = Window:CreateTab("Logs")
 Tabs.Tsunami  = Window:CreateTab("Tsunami")
 
+assert(Tabs.Tsunami, "Tab Tsunami não existe")
 print("Carregadando módulos...")
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
