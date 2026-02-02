@@ -5,10 +5,10 @@ return function(Tab)
 
     Tab:CreateToggle({
         Name = "Auto Collect",
-        Callback = Logic.Toggle
+        Callback = Logic.ToggleMoney
     })
 
-    Tab:CreateButton({
+    Tab:CreateToggle({
         Name = "Reset Base",
         Callback = Logic.ResetBase
     })
