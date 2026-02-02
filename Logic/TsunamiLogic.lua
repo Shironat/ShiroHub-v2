@@ -20,7 +20,7 @@ local Ativo = false
 local MinhaBase = nil
 local valorAtual = 1
 local VALOR_MAX = 10
-local intervalo = 0.1
+local intervalo = 0.4
 local acumulador = 0
 
 local function BuscarMinhaBase()
