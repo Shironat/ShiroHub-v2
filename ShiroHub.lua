@@ -12,12 +12,9 @@ Tabs.Logs     = Window:CreateTab("Logs")
 
 print("Tabs Carregadas")
 
-print("Exploits...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
 print("[OK]")
-print("Inject...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Inject.lua"))()(Tabs.Inject)
 print("[OK]")
-print("Logs")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Logs.lua"))()(Tabs.Logs)
-print("Módulos carregados")
+print("ShiroHub carregado!")
