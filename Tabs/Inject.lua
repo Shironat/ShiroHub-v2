@@ -1,5 +1,4 @@
 return function(Tab)
-    print("Inject inicializada")
 
     -- local Logic = loadstring(game:HttpGet("LINK_DA_LOGICA.lua"))()
 
