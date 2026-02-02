@@ -6,9 +6,9 @@ local Window = Rayfield:CreateWindow({ Name = "ShiroHub v2" })
 print("Carregando Tabs...")
 local Tabs = {}
 
-Tabs.Exploits = Rayfield:CreateTab("Exploits")
-Tabs.Inject   = Rayfield:CreateTab("Injection")
-Tabs.Logs     = Rayfield:CreateTab("Logs")
+Tabs.Exploits = Window:CreateTab("Exploits")
+Tabs.Inject   = Window:CreateTab("Injection")
+Tabs.Logs     = Window:CreateTab("Logs")
 
 print("Tabs Carregadas")
 
