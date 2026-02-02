@@ -82,7 +82,7 @@ RunService.Heartbeat:Connect(function(dt)
     end
 end)
 
-function TsunamiLogic.Toggle(state)
+function TsunamiLogic.ToggleMoney(state)
     Ativo = state
 
     if state then
