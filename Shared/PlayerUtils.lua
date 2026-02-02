@@ -1,4 +1,4 @@
-local S = require(script.Parent.Services)
+local S = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Shared/Services.lua"))()
 local Players = S.Players
 local TeleportService = S.TeleportService
 
