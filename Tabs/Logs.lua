@@ -1,20 +1,7 @@
-print("Logs.lua carregando")
-
 return function(Tab)
-
-    -- local Logic = loadstring(game:HttpGet("LINK_DA_LOGICA.lua"))()
-
-    Tab:CreateButton({
-        Name = "Exemplo Botão2",
-        Callback = function()
-            print("Botão clicado")
-        end
-    })
-
-    Tab:CreateToggle({
-        Name = "Exemplo Toggle2",
-        Callback = function(state)
-            print("Toggle:", state)
-        end
-    })
+    local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/LogsLogic.lua"))()
+    
+    Logic.CreateTerminal(Tab)
+    
+    Logic.PrintLine("ShiroHub Logs iniciado!")
 end
