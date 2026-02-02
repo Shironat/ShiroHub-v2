@@ -20,7 +20,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/
 print("INJECT: 200[OK]")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Logs.lua"))()(Tabs.Logs)
 print("LOGS: 200[OK]")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Logs)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Tsunami)
 print("TSUNAMI: 200[OK]")
 
 print("ShiroHub carregado!")
