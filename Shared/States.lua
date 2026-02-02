@@ -1,7 +1,7 @@
 local State = {
     Idle = {
         antiIdleActive = false,
-        idleConnection
+        idleConnection = nil
     },
 
     ESP = {
@@ -20,7 +20,7 @@ local State = {
     Loaded = {
         Dex = false,
         Spy = false,
-        Key = falar,
+        Key = false,
         Inf = false
     }
 }
