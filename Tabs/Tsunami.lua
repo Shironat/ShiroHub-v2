@@ -1,18 +1,15 @@
 return function(Tab)
-
-    -- local Logic = loadstring(game:HttpGet("LINK_DA_LOGICA.lua"))()
-
-    Tab:CreateButton({
-        Name = "Exemplo Botão3",
-        Callback = function()
-            print("Botão clicado")
-        end
-    })
+    local Logic = loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/LogicTsunami.lua"
+    ))()
 
     Tab:CreateToggle({
-        Name = "Exemplo Toggle3",
-        Callback = function(state)
-            print("Toggle:", state)
-        end
+        Name = "Auto Collect",
+        Callback = Logic.Toggle
+    })
+
+    Tab:CreateButton({
+        Name = "Reset Base",
+        Callback = Logic.ResetBase
     })
 end
