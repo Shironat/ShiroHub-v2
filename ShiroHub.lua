@@ -10,7 +10,7 @@ local Tabs = {}
 Tabs.Exploits = Window:CreateTab("Exploits")
 Tabs.Inject   = Window:CreateTab("Injection")
 Tabs.Logs     = Window:CreateTab("Logs")
-Tabs.Tsunamk  = Window:CreateTab("Tsunami")
+Tabs.Tsunami  = Window:CreateTab("Tsunami")
 
 print("Carregadando módulos...")
 
