@@ -1,5 +1,3 @@
-print("Inject.lua carregando...")
-
 return function(Tab)
     print("Inject inicializada")
 
