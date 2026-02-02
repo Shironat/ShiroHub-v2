@@ -1,4 +1,5 @@
-print("Carregando janela...")
+https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/LogicTsunami.lua
+print("Carregando ShiroHub...")
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local Window = Rayfield:CreateWindow({ Name = "ShiroHub v2" })
@@ -18,4 +19,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/
 print("INJECT: 200[OK]")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Logs.lua"))()(Tabs.Logs)
 print("LOGS: 200[OK]")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Logs)
+print("TSUNAMI: 200[OK]")
+
 print("ShiroHub carregado!")
