@@ -98,4 +98,68 @@ function TsunamiLogic.ResetBase()
     ResolverBase()
 end
 
+local AutoCollectEnabled = false
+local isTweening = false
+local CHECK_INTERVAL = 2
+local TWEEN_DURATION = 0.12
+
+local function tweenToPosition(targetPos)
+    if isTweening then return end
+    isTweening = true
+
+    local tweenInfo = TweenInfo.new(
+        TWEEN_DURATION,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.InOut,
+        0,
+        false,
+        0
+    )
+
+    local tween = TweenService:Create(hrp, tweenInfo, {CFrame = CFrame.new(targetPos)})
+    tween:Play()
+    tween.Completed:Connect(function()
+        isTweening = false
+    end)
+end
+
+-- Função principal do auto-collector
+local function collectCoins()
+    local targets = {}
+
+    local ufoParts = workspace:FindFirstChild("UFOEventParts")
+    if ufoParts then
+        for _, obj in ipairs(ufoParts:GetChildren()) do
+            if obj:IsA("BasePart") then
+                table.insert(targets, obj)
+            end
+        end
+    end
+
+    local goldParts = workspace:FindFirstChild("MoneyEventParts")
+    if goldParts and goldParts:FindFirstChild("GoldBar") then
+        local goldMain = goldParts.GoldBar:FindFirstChild("Main")
+        if goldMain and goldMain:IsA("BasePart") then
+            table.insert(targets, goldMain)
+        end
+    end
+
+    for _, target in ipairs(targets) do
+        tweenToPosition(target.Position)
+        task.wait(TWEEN_DURATION + 0.05)
+    end
+end
+
+RunService.RenderStepped:Connect(function(dt)
+    if not AutoCollectEnabled then return end
+    -- Checagem a cada CHECK_INTERVAL
+    if not TsunamiLogic._lastCheck then TsunamiLogic._lastCheck = 0 end
+    TsunamiLogic._lastCheck += dt
+    if TsunamiLogic._lastCheck < CHECK_INTERVAL then return end
+    TsunamiLogic._lastCheck = 0
+
+    collectCoins()
+end)
+
+
 return TsunamiLogic
