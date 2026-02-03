@@ -23,7 +23,7 @@ return function(Tab)
     end
 
     Tab:CreateDropdown({
-        Name = "Selecionar Brainrot",
+        Name = "Selecionar Brainrot(s)",
         Options = options,
         Callback = function(selected)
             for _, b in ipairs(brainrots) do
