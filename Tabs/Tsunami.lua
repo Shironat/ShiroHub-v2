@@ -12,10 +12,4 @@ return function(Tab)
         Name = "Auto Collect",
         Callback = Logic.ToggleMoney
     })
-
-    Tab:CreateToggle({
-        Name = "Tsunami Evade",
-        Callback = Logic.TsunamiEvade(value)
-    end
-})
 end
