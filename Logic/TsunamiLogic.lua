@@ -21,8 +21,8 @@ local TsunamiLogic = {}
 local MoneyEnabled = false
 local MinhaBase = nil
 local valorAtual = 1
-local VALOR_MAX = 10
-local intervalo = 0.4
+local VALOR_MAX = 40
+local intervalo = 0.2
 local acumulador = 0
 
 local EventCoinEnabled = false
