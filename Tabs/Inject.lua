@@ -21,7 +21,7 @@ return function(Tab)
         Callback = function()
             if Ket then return end
             loaded = true
-            loadstring(game:HttpGet("https://nescoroco.lat/NDexV01.txt"))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Ketamine/refs/heads/main/Ketamine.lua"))()
     end
     })
 
@@ -31,7 +31,7 @@ return function(Tab)
         Callback = function()
             if Spy then return end
             loaded = true
-            loadstring(game:HttpGet("https://nescoroco.lat/NDexV01.txt"))()
+                    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/78n/SimpleSpy/main/SimpleSpyBeta.lua"))()
     end
     })
 
@@ -41,7 +41,7 @@ return function(Tab)
         Callback = function()
             if Inf then return end
             loaded = true
-            loadstring(game:HttpGet("https://nescoroco.lat/NDexV01.txt"))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
     end
     })
 
