@@ -26,4 +26,13 @@ return function(Tab)
            end
         end
     })
+
+    Tab:CreateToggle({
+        Name = "Auto Event Coins",
+        Callback = function(enabled)
+           pcall(function()
+               Logic.ToggleMoney(enabled)
+           end)
+        end,
+    })
 end
