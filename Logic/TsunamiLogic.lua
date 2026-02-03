@@ -176,6 +176,21 @@ function TsunamiLogic.ToggleUpgrade(state, slot)
         UpgradeSlot = nil
     end
 end
+
+function TsunamiLogic.UpgradeBrainrot(slotNumber)
+    if not MinhaBase then
+        if not ResolverBase() then return end
+    end
+
+    pcall(function()
+        Remote:InvokeServer(
+            "Upgrade Brainrot",
+            MinhaBase.Name,
+            slotNumber
+        )
+    end)
+end
+
 task.spawn(function()
     while true do
         if AtivoUpgrade and UpgradeSlot then
