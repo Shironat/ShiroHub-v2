@@ -15,9 +15,6 @@ return function(Tab)
             table.insert(options, b.Name)
         end
 
-        print("[Tsunami] Brainrots encontrados:", #brainrots)
-
-        -- dropdown ainda não criado
         if not DropdownRef then
             DropdownRef = Tab:CreateDropdown({
                 Name = "Selecionar Brainrot",
@@ -36,16 +33,19 @@ return function(Tab)
             return
         end
 
-        -- dropdown existe → refresh seguro
         if DropdownRef.Refresh then
             DropdownRef:Refresh(options)
             selectedSlot = nil
         else
-            warn("[Tsunami] Dropdown não suporta Refresh()")
+            warn("Dropdown não suporta Refresh()")
         end
     end
 
-    -- Auto Collect
+    Tab:CreateButton({
+        Name = "Reset Base",
+        Callback = Logic.ResetBase
+    })
+
     Tab:CreateToggle({
         Name = "Auto Collect",
         Callback = function(state)
@@ -57,13 +57,11 @@ return function(Tab)
         end
     })
 
-    -- Atualizar manualmente
     Tab:CreateButton({
         Name = "Atualizar Brainrots",
         Callback = LoadBrainrots
     })
 
-    -- Auto Upgrade
     Tab:CreateToggle({
         Name = "Auto Upgrade Brainrot",
         Callback = function(state)
