@@ -35,4 +35,33 @@ return function(Tab)
            end)
         end,
     })
+
+    local selectedSlot = nil
+    local options = {}
+    local brainrots = Logic.GetBrainrots()
+    for _, v in ipairs(brainrots) do
+        table.insert(options, v.Name .. " | slot " .. v.Slot)
+    end
+    if #options > 0 then selectedSlot = brainrots[1].Slot end
+
+    Tab:CreateDropdown({
+        Name = "Selecionar Brainrot",
+        Options = options,
+        CurrentOption = options[1],
+        Callback = function(option)
+            local slot = tonumber(option:match("slot (%d+)"))
+            selectedSlot = slot
+        end
+    })
+
+    Tab:CreateToggle({
+        Name = "Auto Upgrade Brainrot",
+        Callback = function(state)
+            if selectedSlot then
+                Logic.ToggleUpgrade(state, selectedSlot)
+            else
+                warn("[Tsunami Tab] Nenhum slot selecionado!")
+            end
+        end
+    })
 end
