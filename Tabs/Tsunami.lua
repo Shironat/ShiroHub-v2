@@ -22,7 +22,7 @@ return function(Tab)
         end
         end
     end
-
+    print("refresh criado")
     Tab:CreateToggle({
         Name = "Auto Collect",
         Callback = function(state)
@@ -34,7 +34,7 @@ return function(Tab)
             end
         end
     })
-
+    print("Collect criado")
     BrainrotDropdown = Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
         Options = {},
@@ -48,7 +48,7 @@ return function(Tab)
             end
         end
     })
-
+    print("DropDown criado")
     Tab:CreateButton({
         Name = "Atualizar",
         Callback = function()
@@ -70,4 +70,5 @@ return function(Tab)
             end
         end
     })
+    print("final criado")
 end
