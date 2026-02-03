@@ -13,7 +13,8 @@ return function(Tab)
         -- Custom script
     Tab:CreateInput({
         Name = "Custom",
-        PlaceholderText = "Custom Script"
+        PlaceholderText = "Custom Script",
+        PlaceholderText = "Cole seu código aqui",
         Callback = function(inputText)
             if inputText and inputText ~= "" then
                 local success, err = pcall(function()
