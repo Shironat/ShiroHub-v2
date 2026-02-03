@@ -1,18 +1,37 @@
 return function(Tab)
 
-    -- local Logic = loadstring(game:HttpGet("LINK_DA_LOGICA.lua"))()
-
     Tab:CreateButton({
-        Name = "Exemplo Botão",
+        Name = "DexExplorer",
         Callback = function()
             print("Botão clicado")
         end
     })
 
-    Tab:CreateToggle({
-        Name = "Exemplo Toggle",
-        Callback = function(state)
-            print("Toggle:", state)
+    Tab:CreateButton({
+        Name = "KetamineSpy",
+        Callback = function()
+            print("Botão clicado")
+        end
+    })
+
+    Tab:CreateButton({
+        Name = "SimpleSpy",
+        Callback = function()
+            print("Botão clicado")
+        end
+    })
+
+    Tab:CreateButton({
+        Name = "Infinite Yield",
+        Callback = function()
+            print("Botão clicado")
+        end
+    })
+
+    Tab:CreateInput({
+        Name = "Custom script here...",
+        Callback = function()
+            print("Botão clicado")
         end
     })
 end
