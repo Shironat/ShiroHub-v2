@@ -1,7 +1,10 @@
 return function(Tab)
-    local Logic = loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"
-    ))()
+    local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"))()
+
+    local brainrots = Logic.GetBrainrots()
+
+    print("Logic =", Logic)
+    print("GetBrainrots =", Logic and Logic.GetBrainrots)
 
     Tab:CreateButton({
         Name = "Reset Base",
@@ -13,7 +16,6 @@ return function(Tab)
         Callback = Logic.ToggleMoney
     })
 
-    local brainrots = Logic.GetBrainrots()
 
     local options = {}
     local selectedSlot = nil
