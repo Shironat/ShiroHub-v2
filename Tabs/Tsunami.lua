@@ -35,12 +35,16 @@ return function(Tab)
         })
     end
 
+    Tab:CreateSection("Reset(If it stops working)")
+
     Tab:CreateButton({
         Name = "Reset Base",
         Callback = function()
             Logic.ResetBase()
         end
     })
+
+    Tab:CreateSection("AutoFarms")
 
     Tab:CreateToggle({
         Name = "Auto Collect",
