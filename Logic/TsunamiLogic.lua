@@ -165,20 +165,24 @@ end)
 
 function TsunamiLogic.GetBrainrots()
     if not TsunamiLogic.MinhaBase then
-        if not TsunamiLogic.ResolverBase() then return {} end
+        return {}
     end
 
-    local list = {}
+    local result = {}
+
     for _, model in ipairs(TsunamiLogic.MinhaBase:GetChildren()) do
-        if model:IsA("Model") and model.Name:match("slot %d+ Brainrot") then
-            for _, v in ipairs(model:GetChildren()) do
-                if v.Name and v.Name ~= "" then
-                    table.insert(list, {Slot = tonumber(model.Name:match("slot (%d+) Brainrot")), Name = v.Name})
-                end
+        if model:IsA("Model") then
+            local slot = model.Name:match("slot (%d+) Brainrot")
+            if slot then
+                table.insert(result, {
+                    Slot = tonumber(slot),
+                    Name = model.Name
+                })
             end
         end
     end
-    return list
+
+    return result
 end
 
 function TsunamiLogic.UpgradeBrainrot(slotNumber)
