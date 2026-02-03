@@ -4,12 +4,18 @@ return function(Tab)
     ))()
 
     Tab:CreateToggle({
+        Name = "Reset Base",
+        Callback = Logic.ResetBase
+    })
+
+    Tab:CreateToggle({
         Name = "Auto Collect",
         Callback = Logic.ToggleMoney
     })
 
     Tab:CreateToggle({
-        Name = "Reset Base",
-        Callback = Logic.ResetBase
-    })
+        Name = "Tsunami Evade",
+        Callback = Logic.TsunamiEvade(value) -- value é true ou false
+    end
+})
 end
