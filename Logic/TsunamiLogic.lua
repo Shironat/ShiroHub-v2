@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService") -- FIX
 
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
@@ -9,21 +10,20 @@ local Remote = ReplicatedStorage
     :WaitForChild("Net")
     :WaitForChild("RF/Plot.PlotAction")
 
-
 local Bases = workspace:WaitForChild("Bases")
 
---Criar Lógica
+-- Criar Lógica
 local TsunamiLogic = {}
 
 -- Estados internos
-local MoneyEnabled = false
+local MoneyEnabled = false            -- FIX (antes Ativo)
 local MinhaBase = nil
 local valorAtual = 1
 local VALOR_MAX = 10
 local intervalo = 0.4
 local acumulador = 0
 
-local EventCoinEnabled = false
+local EventCoinEnabled = false        -- FIX (antes AutoCollectEnabled)
 local isTweening = false
 local CHECK_INTERVAL = 2
 local TWEEN_DURATION = 0.12
@@ -31,6 +31,15 @@ local TWEEN_DURATION = 0.12
 local AtivoUpgrade = false
 local UpgradeSlot = nil
 local UpgradeInterval = 0.1
+
+-- Character / HRP FIX
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+LocalPlayer.CharacterAdded:Connect(function(char)
+    character = char
+    hrp = char:WaitForChild("HumanoidRootPart")
+end)
 
 local function BuscarMinhaBase()
     for _, base in ipairs(Bases:GetChildren()) do
@@ -65,8 +74,10 @@ local function ResolverBase()
     return false
 end
 
+TsunamiLogic.ResolverBase = ResolverBase -- FIX (export)
+
 RunService.Heartbeat:Connect(function(dt)
-    if not Ativo then return end
+    if not MoneyEnabled then return end -- FIX
     if not MinhaBase then return end
 
     acumulador += dt
@@ -92,13 +103,10 @@ RunService.Heartbeat:Connect(function(dt)
 end)
 
 function TsunamiLogic.ToggleMoney(state)
-    Ativo = state
+    MoneyEnabled = state
 
-    if state then
-        if not MinhaBase then
-            ResolverBase()
-        end
-    else
+    if state and not MinhaBase then
+        ResolverBase()
     end
 end
 
@@ -108,83 +116,50 @@ function TsunamiLogic.ResetBase()
 end
 
 local function tweenToPosition(targetPos)
-    if isTweening then return end
+    if isTweening or not hrp then return end
     isTweening = true
 
-    local tweenInfo = TweenInfo.new(
-        TWEEN_DURATION,
-        Enum.EasingStyle.Linear,
-        Enum.EasingDirection.InOut,
-        0,
-        false,
-        0
+    local tween = TweenService:Create(
+        hrp,
+        TweenInfo.new(TWEEN_DURATION, Enum.EasingStyle.Linear),
+        { CFrame = CFrame.new(targetPos) }
     )
 
-    local tween = TweenService:Create(hrp, tweenInfo, {CFrame = CFrame.new(targetPos)})
     tween:Play()
-    tween.Completed:Connect(function()
+    tween.Completed:Once(function()
         isTweening = false
     end)
 end
 
-local function collectCoins()
-    local targets = {}
-
-    local ufoParts = workspace:FindFirstChild("UFOEventParts")
-    if ufoParts then
-        for _, obj in ipairs(ufoParts:GetChildren()) do
-            if obj:IsA("BasePart") then
-                table.insert(targets, obj)
-            end
-        end
-    end
-
-    local goldParts = workspace:FindFirstChild("MoneyEventParts")
-    if goldParts and goldParts:FindFirstChild("GoldBar") then
-        local goldMain = goldParts.GoldBar:FindFirstChild("Main")
-        if goldMain and goldMain:IsA("BasePart") then
-            table.insert(targets, goldMain)
-        end
-    end
-
-    for _, target in ipairs(targets) do
-        tweenToPosition(target.Position)
-        task.wait(TWEEN_DURATION + 0.05)
-    end
-end
-
 RunService.RenderStepped:Connect(function(dt)
-    if not AutoCollectEnabled then return end
-    if not TsunamiLogic._lastCheck then TsunamiLogic._lastCheck = 0 end
-    TsunamiLogic._lastCheck += dt
+    if not EventCoinEnabled then return end -- FIX
+
+    TsunamiLogic._lastCheck = (TsunamiLogic._lastCheck or 0) + dt
     if TsunamiLogic._lastCheck < CHECK_INTERVAL then return end
     TsunamiLogic._lastCheck = 0
-
-    collectCoins()
 end)
 
 function TsunamiLogic.GetBrainrots()
     local result = {}
 
-    local base = TsunamiLogic.ResolverBase()
-    if not base then
-        return result
+    if not MinhaBase then
+        if not ResolverBase() then
+            return result
+        end
     end
 
     for _, obj in ipairs(MinhaBase:GetChildren()) do
         if obj:IsA("Model") then
-            local lowerName = obj.Name:lower()
-            local slotNumber = lowerName:match("slot (%d+) brainrot")
+            local slotNumber = obj.Name:lower():match("slot (%d+) brainrot")
 
             if slotNumber then
-                -- procura models dentro do slot
                 for _, child in ipairs(obj:GetChildren()) do
                     if child:IsA("Model") then
                         table.insert(result, {
                             Slot = tonumber(slotNumber),
                             Name = child.Name
                         })
-                        break -- só 1 brainrot por slot
+                        break
                     end
                 end
             end
@@ -193,16 +168,17 @@ function TsunamiLogic.GetBrainrots()
 
     return result
 end
+
 function TsunamiLogic.UpgradeBrainrot(slotNumber)
-    if not TsunamiLogic.MinhaBase then
-        if not TsunamiLogic.ResolverBase() then return end
+    if not MinhaBase then
+        if not ResolverBase() then return end
     end
 
     task.spawn(function()
         pcall(function()
             Remote:InvokeServer(
                 "Upgrade Brainrot",
-                TsunamiLogic.MinhaBase.Name,
+                MinhaBase.Name,
                 slotNumber
             )
         end)
