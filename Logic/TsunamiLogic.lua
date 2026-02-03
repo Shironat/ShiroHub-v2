@@ -223,7 +223,7 @@ task.spawn(function()
     while true do
         if UpgradeSpeedEnabled then
             pcall(function()
-                RF_UpgradeSpeed:InvokeServer(1)
+                RF_UpgradeSpeed:InvokeServer(10)
             end)
         end
         task.wait(UPGRADE_SPEED_INTERVAL)
