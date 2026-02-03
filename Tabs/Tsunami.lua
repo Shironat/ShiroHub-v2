@@ -3,12 +3,10 @@ return function(Tab)
         game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua")
     )()
 
-    -- Estado
     local brainrots = {}
     local selectedSlot = nil
     local BrainrotDropdown = nil
 
-    -- Função de refresh
     local function RefreshBrainrots()
         brainrots = Logic.GetBrainrots() or {}
 
@@ -22,14 +20,9 @@ return function(Tab)
         if BrainrotDropdown then
             BrainrotDropdown:Set(options)
         end
-
-        print("[Tsunami] Brainrots encontrados:", #brainrots)
-        for _, b in ipairs(brainrots) do
-            print("Slot:", b.Slot, "Brainrot:", b.Name)
         end
     end
 
-    -- Auto Collect
     Tab:CreateToggle({
         Name = "Auto Collect",
         Callback = function(state)
@@ -42,7 +35,6 @@ return function(Tab)
         end
     })
 
-    -- Dropdown (criado vazio)
     BrainrotDropdown = Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
         Options = {},
@@ -57,15 +49,13 @@ return function(Tab)
         end
     })
 
-    -- Botão manual de refresh (opcional, mas recomendado)
     Tab:CreateButton({
-        Name = "Atualizar Brainrots",
+        Name = "Atualizar",
         Callback = function()
             RefreshBrainrots()
         end
     })
 
-    -- Auto Upgrade
     Tab:CreateToggle({
         Name = "Auto Upgrade Brainrot",
         Callback = function(state)
@@ -73,7 +63,7 @@ return function(Tab)
                 if selectedSlot then
                     Logic.ToggleUpgrade(true, selectedSlot)
                 else
-                    warn("[Tsunami] Nenhum slot selecionado")
+                    warn("Nenhum slot selecionado")
                 end
             else
                 Logic.ToggleUpgrade(false, nil)
