@@ -15,7 +15,7 @@ return function(Tab)
 
     Tab:CreateToggle({
         Name = "Tsunami Evade",
-        Callback = Logic.TsunamiEvade(value) -- value é true ou false
+        Callback = Logic.TsunamiEvade
     end
 })
 end
