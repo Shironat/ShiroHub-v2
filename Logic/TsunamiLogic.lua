@@ -53,39 +53,6 @@ local function InvokeNoBase(remoteName, ...)
     end)
 end
 
--- === Exemplo de callbacks Rayfield ===
--- Toggle para upgrade automático usando Dropdown
-local UpgradeOptions = {"Brainrot", "Strength", "Defense"}
-local SelectedUpgrade = UpgradeOptions[1]
-
-Tab:CreateDropdown({
-    Name = "Selecionar Upgrade",
-    Options = UpgradeOptions,
-    CurrentOption = SelectedUpgrade,
-    Callback = function(option)
-        SelectedUpgrade = option
-    end
-})
-
-Tab:CreateButton({
-    Name = "Upgrade Base",
-    Callback = function()
-        InvokeWithBase("Upgrade Brainrot", SelectedUpgrade)
-    end
-})
-
--- Botão Rebirth (não precisa de base)
-Tab:CreateButton({
-    Name = "Rebirth",
-    Callback = function()
-        InvokeNoBase("Rebirth")
-    end
-})
-
--- Botão UpgradeSpeed (não precisa de base)
-Tab:CreateButton({
-    Name = "Upgrade Speed",
-    Callback = function()
-        InvokeNoBase("UpgradeSpeed", 1)
+UpgradeSpeed", 1)
     end
 })
