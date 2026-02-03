@@ -1,9 +1,13 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService") -- FIX
+local TweenService = game:GetService("TweenService")
 
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
+
+local RemoteFunctions = ReplicatedStorage:WaitForChild("RemoteFunctions")
+local RF_UpgradeSpeed = RemoteFunctions:WaitForChild("UpgradeSpeed")
+local RF_Rebirth = RemoteFunctions:WaitForChild("Rebirth")
 
 local Remote = ReplicatedStorage
     :WaitForChild("Packages")
@@ -29,6 +33,12 @@ local TWEEN_DURATION = 0.12
 local AtivoUpgrade = false
 local UpgradeSlot = nil
 local UpgradeInterval = 0.1
+
+local UpgradeSpeedEnabled = false
+local RebirthEnabled = false
+
+local UPGRADE_SPEED_INTERVAL = 0.1
+local REBIRTH_INTERVAL = 0.1
 
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
@@ -204,5 +214,35 @@ function TsunamiLogic.ToggleUpgrade(state, slot)
     AtivoUpgrade = state
     UpgradeSlot = slot
 end
+
+function TsunamiLogic.ToggleUpgradeSpeed(state)
+    UpgradeSpeedEnabled = state
+end
+
+task.spawn(function()
+    while true do
+        if UpgradeSpeedEnabled then
+            pcall(function()
+                RF_UpgradeSpeed:InvokeServer(1)
+            end)
+        end
+        task.wait(UPGRADE_SPEED_INTERVAL)
+    end
+end)
+
+function TsunamiLogic.ToggleRebirth(state)
+    RebirthEnabled = state
+end
+
+task.spawn(function()
+    while true do
+        if RebirthEnabled then
+            pcall(function()
+                RF_Rebirth:InvokeServer()
+            end)
+        end
+        task.wait(REBIRTH_INTERVAL)
+    end
+end)
 
 return TsunamiLogic
