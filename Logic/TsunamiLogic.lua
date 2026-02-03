@@ -186,7 +186,7 @@ function TsunamiLogic.UpgradeBrainrot(slotNumber)
         Remote:InvokeServer(
             "Upgrade Brainrot",
             MinhaBase.Name,
-            slotNumber
+            tostring(slotNumber)
         )
     end)
 end
