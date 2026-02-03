@@ -12,18 +12,16 @@ local Remote = ReplicatedStorage
 
 local Bases = workspace:WaitForChild("Bases")
 
--- Criar Lógica
 local TsunamiLogic = {}
 
--- Estados internos
-local MoneyEnabled = false            -- FIX (antes Ativo)
+local MoneyEnabled = false
 local MinhaBase = nil
 local valorAtual = 1
 local VALOR_MAX = 10
 local intervalo = 0.4
 local acumulador = 0
 
-local EventCoinEnabled = false        -- FIX (antes AutoCollectEnabled)
+local EventCoinEnabled = false
 local isTweening = false
 local CHECK_INTERVAL = 2
 local TWEEN_DURATION = 0.12
@@ -32,7 +30,6 @@ local AtivoUpgrade = false
 local UpgradeSlot = nil
 local UpgradeInterval = 0.1
 
--- Character / HRP FIX
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
 
