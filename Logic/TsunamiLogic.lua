@@ -23,6 +23,15 @@ local VALOR_MAX = 10
 local intervalo = 0.4
 local acumulador = 0
 
+local EventCoinEnabled = false
+local isTweening = false
+local CHECK_INTERVAL = 2
+local TWEEN_DURATION = 0.12
+
+local AtivoUpgrade = false
+local UpgradeSlot = nil
+local UpgradeInterval = 0.1
+
 local function BuscarMinhaBase()
     for _, base in ipairs(Bases:GetChildren()) do
         if base:IsA("Model") then
@@ -98,11 +107,6 @@ function TsunamiLogic.ResetBase()
     ResolverBase()
 end
 
-local EventCoinEnabled = false
-local isTweening = false
-local CHECK_INTERVAL = 2
-local TWEEN_DURATION = 0.12
-
 local function tweenToPosition(targetPos)
     if isTweening then return end
     isTweening = true
@@ -123,7 +127,6 @@ local function tweenToPosition(targetPos)
     end)
 end
 
--- Função principal do auto-collector
 local function collectCoins()
     local targets = {}
 
@@ -152,7 +155,6 @@ end
 
 RunService.RenderStepped:Connect(function(dt)
     if not AutoCollectEnabled then return end
-    -- Checagem a cada CHECK_INTERVAL
     if not TsunamiLogic._lastCheck then TsunamiLogic._lastCheck = 0 end
     TsunamiLogic._lastCheck += dt
     if TsunamiLogic._lastCheck < CHECK_INTERVAL then return end
@@ -160,6 +162,54 @@ RunService.RenderStepped:Connect(function(dt)
 
     collectCoins()
 end)
+
+function TsunamiLogic.GetBrainrots()
+    if not TsunamiLogic.MinhaBase then
+        if not TsunamiLogic.ResolverBase() then return {} end
+    end
+
+    local list = {}
+    for _, model in ipairs(TsunamiLogic.MinhaBase:GetChildren()) do
+        if model:IsA("Model") and model.Name:match("slot %d+ Brainrot") then
+            for _, v in ipairs(model:GetChildren()) do
+                if v.Name and v.Name ~= "" then
+                    table.insert(list, {Slot = tonumber(model.Name:match("slot (%d+) Brainrot")), Name = v.Name})
+                end
+            end
+        end
+    end
+    return list
+end
+
+function TsunamiLogic.UpgradeBrainrot(slotNumber)
+    if not TsunamiLogic.MinhaBase then
+        if not TsunamiLogic.ResolverBase() then return end
+    end
+
+    task.spawn(function()
+        pcall(function()
+            Remote:InvokeServer(
+                "Upgrade Brainrot",
+                TsunamiLogic.MinhaBase.Name,
+                slotNumber
+            )
+        end)
+    end)
+end
+
+task.spawn(function()
+    while true do
+        if AtivoUpgrade and UpgradeSlot then
+            TsunamiLogic.UpgradeBrainrot(UpgradeSlot)
+        end
+        task.wait(UpgradeInterval)
+    end
+end)
+
+function TsunamiLogic.ToggleUpgrade(state, slot)
+    AtivoUpgrade = state
+    UpgradeSlot = slot
+end
 
 
 return TsunamiLogic
