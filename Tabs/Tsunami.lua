@@ -1,7 +1,7 @@
 return function(Tab)
     local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"))()
 
-    local brainrots = Logic.GetBrainrots()
+    local brainrots = Logic.GetBrainrots() or {}
 
     print("Logic =", Logic)
     print("GetBrainrots =", Logic and Logic.GetBrainrots)
