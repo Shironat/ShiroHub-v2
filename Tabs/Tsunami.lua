@@ -20,16 +20,26 @@ return function(Tab)
                 Name = "Selecionar Brainrot",
                 Options = options,
                 Callback = function(selected)
-                    print("selecionado:", selected, "Slot:", selectedSlot)
-                    selectedSlot = nil
-                    for _, b in ipairs(brainrots) do
-                        if b.Name == selected then
-                            selectedSlot = b.Slot
-                            print("[Tsunami] Slot selecionado:", selectedSlot)
-                            break
-                        end
+                    local selectedName
+
+                    if type(selected) == "table" then
+                       selectedName = selected.Name or selected[1]
+                    else
+                       selectedName = selected
                     end
-                end
+
+                    print("selecionado:", selectedName)
+
+                    selectedSlot = nil
+
+                       for _, b in ipairs(brainrots) do
+                    if b.Name == selectedName then
+                       selectedSlot = b.Slot
+                       print("[Tsunami] Slot selecionado:", selectedSlot)
+                    break
+                    end
+                 end
+              end
             })
             return
         end
