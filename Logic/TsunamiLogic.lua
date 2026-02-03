@@ -171,7 +171,7 @@ function TsunamiLogic.GetBrainrots()
         return result
     end
 
-    for _, obj in ipairs(base:GetChildren()) do
+    for _, obj in ipairs(MinhaBase:GetChildren()) do
         if obj:IsA("Model") then
             local lowerName = obj.Name:lower()
             local slotNumber = lowerName:match("slot (%d+) brainrot")
