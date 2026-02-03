@@ -32,7 +32,7 @@ local TWEEN_DURATION = 0.12
 
 local AtivoUpgrade = false
 local UpgradeSlot = nil
-local UpgradeInterval = 0.1
+local UpgradeInterval = 0.01
 
 local UpgradeSpeedEnabled = false
 local RebirthEnabled = false
