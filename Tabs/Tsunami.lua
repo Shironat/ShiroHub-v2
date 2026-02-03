@@ -3,7 +3,7 @@ return function(Tab)
         game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua")
     )()
 
-    local brainrots = {}
+    local brainrots = Logic.GetBrainrots() or {}
     local selectedSlot = nil
     local BrainrotDropdown = nil
 
