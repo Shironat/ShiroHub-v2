@@ -5,7 +5,7 @@ local State = {
     },
 
     ESP = {
-        Enabled = true,
+        Enabled = false,
         MaxDistance = 1000,
         Cache = {}
     },
