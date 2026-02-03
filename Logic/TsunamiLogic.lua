@@ -240,7 +240,6 @@ function TsunamiLogic.TsunamiEvade(enabled)
                     if safeGap then
                         fastTweenToSafety(safeGap.part)
                     else
-                        warn("NO SAFE GAPS FOUND!")
                     end
                     break
                 end
