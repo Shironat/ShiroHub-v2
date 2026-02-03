@@ -17,14 +17,8 @@ print("Carregadando módulos...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Exploits.lua"))()(Tabs.Exploits)
 print("EXPLOITS: 200[OK]")
 
-local ok, e = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Inject.lua"))()(Tabs.Inject)
-end)
-if ok then
-    print("INJECT: 200[OK]")
-else
-    warn("Erro ao carregar Inject.lua: "..tostring(e))
-end
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Inject.lua"))()(Tabs.Inject)
+print("INJECT: 200[OK]")
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Tsunami)
 print("TSUNAMI: 200[OK]")
