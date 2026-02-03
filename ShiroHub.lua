@@ -2,7 +2,7 @@ print("Carregando ShiroHub...")
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 print("RAYFIELD: 200[OK]")
 
-local Window = Rayfield:CreateWindow({ Name = "ShiroHub v2" })
+local Window = Rayfield:CreateWindow({ Name = "ShiroHub v2", LoadingTitle = "Carregando...", LoadingSubtitle = "by Shiro", ShowText = "ShiroHub"})
 
 print("Carregando Tabs...")
 local Tabs = {}
