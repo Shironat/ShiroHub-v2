@@ -18,12 +18,6 @@ return function(Tab)
         Callback = Logic.ToggleMoney
     })
 
-
-    Tab: CreateToggle((
-        Name Auto Event Coins",
-        Callback Logic. ToggleMoney
-    })
-
     Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
         Options = options,
