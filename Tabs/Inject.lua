@@ -1,3 +1,9 @@
+local Dex = false
+local Spy = false
+local Ket = false
+local Inf = false
+local loaded = false
+
 return function(Tab)
     -- Segurança: verifica se o Tab é válido
     if not Tab or type(Tab.CreateButton) ~= "function" or type(Tab.CreateInput) ~= "function" then
@@ -5,10 +11,6 @@ return function(Tab)
         return
     end
 
-    -- Variáveis locais
-    local Dex, Spy, Ket, Inf, loaded = false, false, false, false, false
-
-    -- Função auxiliar segura para carregar scripts externos
     local function safeLoadScript(url, name)
         local success, err = pcall(function()
             loadstring(game:HttpGet(url))()
@@ -18,7 +20,6 @@ return function(Tab)
         end
     end
 
-    -- Lista de scripts externos
     local scripts = {
         {Name = "Dex Explorer", URL = "https://nescoroco.lat/NDexV01.txt", Flag = "Dex"},
         {Name = "KetamineSpy", URL = "https://raw.githubusercontent.com/InfernusScripts/Ketamine/refs/heads/main/Ketamine.lua", Flag = "Ket"},
@@ -26,7 +27,6 @@ return function(Tab)
         {Name = "Infinite Yield", URL = "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", Flag = "Inf"},
     }
 
-    -- Cria os botões automaticamente
     for _, scriptData in ipairs(scripts) do
         local flagName = scriptData.Flag
         Tab:CreateButton({
