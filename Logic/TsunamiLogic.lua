@@ -16,7 +16,7 @@ local Bases = workspace:WaitForChild("Bases")
 local TsunamiLogic = {}
 
 -- Estados internos
-local Ativo = false
+local MoneyEnabled = false
 local MinhaBase = nil
 local valorAtual = 1
 local VALOR_MAX = 10
@@ -98,7 +98,7 @@ function TsunamiLogic.ResetBase()
     ResolverBase()
 end
 
-local AutoCollectEnabled = false
+local EventCoinEnabled = false
 local isTweening = false
 local CHECK_INTERVAL = 2
 local TWEEN_DURATION = 0.12
