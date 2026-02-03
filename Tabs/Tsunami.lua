@@ -39,7 +39,6 @@ return function(Tab)
         Name = "Reset Base",
         Callback = function()
             Logic.ResetBase()
-            RefreshBrainrotDropdown()
         end
     })
 
