@@ -32,7 +32,6 @@ return function(Tab)
         end
     })
 
-    RefreshBrainrotDropdown()
 
     Tab:CreateToggle({
         Name = "Auto Upgrade Brainrot",
