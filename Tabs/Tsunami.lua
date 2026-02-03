@@ -7,34 +7,6 @@ return function(Tab)
     local selectedSlot = nil
     local BrainrotDropdown = nil
 
-    local function RefreshBrainrotDropdown()
-        if BrainrotDropdown then
-            BrainrotDropdown:Destroy()
-            BrainrotDropdown = nil
-        end
-
-        brainrots = Logic.GetBrainrots()
-        selectedSlot = nil
-
-        local options = {}
-        for _, b in ipairs(brainrots) do
-            table.insert(options, b.Name)
-        end
-
-        BrainrotDropdown = Tab:CreateDropdown({
-            Name = "Selecionar Brainrot",
-            Options = options,
-            Callback = function(selected)
-                for _, b in ipairs(brainrots) do
-                    if b.Name == selected then
-                        selectedSlot = b.Slot
-                        break
-                    end
-                end
-            end
-        })
-    end
-
     Tab:CreateSection("Reset(If it stops working)")
 
     Tab:CreateButton({
@@ -71,5 +43,27 @@ return function(Tab)
                 warn("[Tsunami] Nenhum Brainrot selecionado")
             end
         end
+    })
+
+    Tab:CreateDropdown({
+    Name = "Selecionar Brainrot",
+    Options = options,
+    Callback = function(selected)
+        -- Rayfield pode retornar string OU tabela
+        local selectedName = selected
+        if type(selected) == "table" then
+            selectedName = selected.Value
+        end
+
+        selectedSlot = nil
+
+        for _, b in ipairs(brainrots) do
+            if b.Name == selectedName then
+                selectedSlot = b.Slot
+                print("[Tsunami] Slot selecionado:", selectedSlot, b.Name)
+                break
+            end
+        end
+    end
     })
 end
