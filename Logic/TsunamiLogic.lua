@@ -172,7 +172,8 @@ function TsunamiLogic.GetBrainrots()
 
     for _, model in ipairs(TsunamiLogic.MinhaBase:GetChildren()) do
         if model:IsA("Model") then
-            local slot = model.Name:match("slot (%d+) brainrot")
+            local lower = model.Name:lower()
+            local slot = lower:match("slot (%d+) brainrot")
             if slot then
                 table.insert(result, {
                     Slot = tonumber(slot),
