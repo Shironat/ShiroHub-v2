@@ -1,42 +1,20 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
+-- Serviços
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
-local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
-
-local Remote = ReplicatedStorage
-    :WaitForChild("Packages")
-    :WaitForChild("Net")
-    :WaitForChild("RF/Plot.PlotAction")
-
-
+-- Base do jogador
 local Bases = workspace:WaitForChild("Bases")
-
---Criar Lógica
-local TsunamiLogic = {}
-
--- Estados internos
-local Ativo = false
 local MinhaBase = nil
-local valorAtual = 1
-local VALOR_MAX = 10
-local intervalo = 0.4
-local acumulador = 0
 
-local function BuscarMinhaBase()
+-- Função para encontrar a base
+local function ResolverMinhaBase()
     for _, base in ipairs(Bases:GetChildren()) do
         if base:IsA("Model") then
             local PlayerName = base:FindFirstChild("PlayerName", true)
-
-            if PlayerName
-                and PlayerName:IsA("TextLabel")
-                and (
-                    PlayerName.Text == LocalPlayer.Name
-                    or PlayerName.Text == LocalPlayer.DisplayName
-                ) then
-
+            if PlayerName and PlayerName:IsA("TextLabel") and 
+               (PlayerName.Text == LocalPlayer.Name or PlayerName.Text == LocalPlayer.DisplayName) then
                 MinhaBase = base
-                print("Base:", MinhaBase.Name)
                 return true
             end
         end
@@ -44,122 +22,70 @@ local function BuscarMinhaBase()
     return false
 end
 
-local function ResolverBase()
-    for tentativa = 1, 10 do
-        if BuscarMinhaBase() then
-            return true
+-- Função utilitária para invokes que **precisam de base**
+local function InvokeWithBase(actionName, param)
+    if not MinhaBase then
+        if not ResolverMinhaBase() then
+            warn("[InvokeWithBase]: Base não encontrada!")
+            return
         end
-        task.wait(0.5)
     end
 
-    warn("Base nao encontrada")
-    return false
-end
-
-RunService.Heartbeat:Connect(function(dt)
-    if not Ativo then return end
-    if not MinhaBase then return end
-
-    acumulador += dt
-    if acumulador < intervalo then return end
-    acumulador = 0
-
-    local valor = tostring(valorAtual)
-
+    local args = { actionName, MinhaBase.Name, param }
     task.spawn(function()
         pcall(function()
-            Remote:InvokeServer(
-                "Collect Money",
-                MinhaBase.Name,
-                valor
-            )
+            ReplicatedStorage:WaitForChild("Packages")
+                :WaitForChild("Net")
+                :WaitForChild("RF/Plot.PlotAction")
+                :InvokeServer(unpack(args))
         end)
     end)
-
-    valorAtual += 1
-    if valorAtual > VALOR_MAX then
-        valorAtual = 1
-    end
-end)
-
-function TsunamiLogic.ToggleMoney(state)
-    Ativo = state
-
-    if state then
-        if not MinhaBase then
-            ResolverBase()
-        end
-    else
-    end
 end
 
-function TsunamiLogic.ResetBase()
-    MinhaBase = nil
-    ResolverBase()
-end
-
-local AutoCollectEnabled = false
-local isTweening = false
-local CHECK_INTERVAL = 2
-local TWEEN_DURATION = 0.12
-
-local function tweenToPosition(targetPos)
-    if isTweening then return end
-    isTweening = true
-
-    local tweenInfo = TweenInfo.new(
-        TWEEN_DURATION,
-        Enum.EasingStyle.Linear,
-        Enum.EasingDirection.InOut,
-        0,
-        false,
-        0
-    )
-
-    local tween = TweenService:Create(hrp, tweenInfo, {CFrame = CFrame.new(targetPos)})
-    tween:Play()
-    tween.Completed:Connect(function()
-        isTweening = false
+-- Função utilitária para invokes **sem base**
+local function InvokeNoBase(remoteName, ...)
+    task.spawn(function()
+        pcall(function()
+            ReplicatedStorage:WaitForChild("RemoteFunctions")
+                :WaitForChild(remoteName)
+                :InvokeServer(...)
+        end)
     end)
 end
 
--- Função principal do auto-collector
-local function collectCoins()
-    local targets = {}
+-- === Exemplo de callbacks Rayfield ===
+-- Toggle para upgrade automático usando Dropdown
+local UpgradeOptions = {"Brainrot", "Strength", "Defense"}
+local SelectedUpgrade = UpgradeOptions[1]
 
-    local ufoParts = workspace:FindFirstChild("UFOEventParts")
-    if ufoParts then
-        for _, obj in ipairs(ufoParts:GetChildren()) do
-            if obj:IsA("BasePart") then
-                table.insert(targets, obj)
-            end
-        end
+Tab:CreateDropdown({
+    Name = "Selecionar Upgrade",
+    Options = UpgradeOptions,
+    CurrentOption = SelectedUpgrade,
+    Callback = function(option)
+        SelectedUpgrade = option
     end
+})
 
-    local goldParts = workspace:FindFirstChild("MoneyEventParts")
-    if goldParts and goldParts:FindFirstChild("GoldBar") then
-        local goldMain = goldParts.GoldBar:FindFirstChild("Main")
-        if goldMain and goldMain:IsA("BasePart") then
-            table.insert(targets, goldMain)
-        end
+Tab:CreateButton({
+    Name = "Upgrade Base",
+    Callback = function()
+        InvokeWithBase("Upgrade Brainrot", SelectedUpgrade)
     end
+})
 
-    for _, target in ipairs(targets) do
-        tweenToPosition(target.Position)
-        task.wait(TWEEN_DURATION + 0.05)
+-- Botão Rebirth (não precisa de base)
+Tab:CreateButton({
+    Name = "Rebirth",
+    Callback = function()
+        InvokeNoBase("Rebirth")
     end
-end
+})
 
-RunService.RenderStepped:Connect(function(dt)
-    if not AutoCollectEnabled then return end
-    -- Checagem a cada CHECK_INTERVAL
-    if not TsunamiLogic._lastCheck then TsunamiLogic._lastCheck = 0 end
-    TsunamiLogic._lastCheck += dt
-    if TsunamiLogic._lastCheck < CHECK_INTERVAL then return end
-    TsunamiLogic._lastCheck = 0
-
-    collectCoins()
-end)
-
-
-return TsunamiLogic
+-- Botão UpgradeSpeed (não precisa de base)
+Tab:CreateButton({
+    Name = "Upgrade Speed",
+    Callback = function()
+        InvokeNoBase("UpgradeSpeed", 1)
+    end
+})
