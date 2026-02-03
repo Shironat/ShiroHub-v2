@@ -1,46 +1,48 @@
 return function(Tab)
-    local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"))()
+    local Logic = loadstring(
+        game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua")
+    )()
 
     local brainrots = {}
     local selectedSlot = nil
     local DropdownRef = nil
 
-    local function BuildDropdown()
-        if DropdownRef then
-            DropdownRef:Destroy()
-            DropdownRef = nil
-        end
+    local function LoadBrainrots()
+        brainrots = Logic.GetBrainrots() or {}
 
         local options = {}
         for _, b in ipairs(brainrots) do
             table.insert(options, b.Name)
         end
 
-        DropdownRef = Tab:CreateDropdown({
-            Name = "Selecionar Brainrot",
-            Options = options,
-            Callback = function(selected)
-                for _, b in ipairs(brainrots) do
-                    if b.Name == selected then
-                        selectedSlot = b.Slot
-                        print("[Tsunami] Slot selecionado:", selectedSlot)
-                        break
+        print("[Tsunami] Brainrots encontrados:", #brainrots)
+
+        -- dropdown ainda não criado
+        if not DropdownRef then
+            DropdownRef = Tab:CreateDropdown({
+                Name = "Selecionar Brainrot",
+                Options = options,
+                Callback = function(selected)
+                    selectedSlot = nil
+                    for _, b in ipairs(brainrots) do
+                        if b.Name == selected then
+                            selectedSlot = b.Slot
+                            print("[Tsunami] Slot selecionado:", selectedSlot)
+                            break
+                        end
                     end
                 end
-            end
-        })
-    end
-
-    local function RefreshBrainrots()
-        brainrots = Logic.GetBrainrots() or {}
-        selectedSlot = nil
-
-        print("[Tsunami] Brainrots encontrados:", #brainrots)
-        for _, b in ipairs(brainrots) do
-            print("Slot:", b.Slot, "Brainrot:", b.Name)
+            })
+            return
         end
 
-        BuildDropdown()
+        -- dropdown existe → refresh seguro
+        if DropdownRef.Refresh then
+            DropdownRef:Refresh(options)
+            selectedSlot = nil
+        else
+            warn("[Tsunami] Dropdown não suporta Refresh()")
+        end
     end
 
     -- Auto Collect
@@ -50,15 +52,15 @@ return function(Tab)
             Logic.ToggleMoney(state)
 
             if state then
-                task.delay(0.3, RefreshBrainrots)
+                task.delay(0.4, LoadBrainrots)
             end
         end
     })
 
-    -- Refresh manual
+    -- Atualizar manualmente
     Tab:CreateButton({
         Name = "Atualizar Brainrots",
-        Callback = RefreshBrainrots
+        Callback = LoadBrainrots
     })
 
     -- Auto Upgrade
