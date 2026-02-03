@@ -104,7 +104,7 @@ local TweenService = game:GetService("TweenService")
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-local DANGER_DISTANCE = 80
+local DANGER_DISTANCE = 100
 local CHECK_INTERVAL = 0.1
 local TELEPORT_HEIGHT_OFFSET = 3
 local TWEEN_DURATION = 0.15
