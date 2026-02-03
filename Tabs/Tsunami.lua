@@ -52,10 +52,19 @@ return function(Tab)
         end
     end
 
+    Tab:CreateSection("Resets")
+
     Tab:CreateButton({
         Name = "Reset Base",
         Callback = Logic.ResetBase
     })
+
+    Tab:CreateButton({
+        Name = "Atualizar Brainrots",
+        Callback = LoadBrainrots
+    })
+
+    Tab:CreateSection("AutoFarms")
 
     Tab:CreateToggle({
         Name = "Auto Collect",
@@ -77,24 +86,28 @@ return function(Tab)
         end,  
     })  
 
-
-    Tab:CreateButton({
-        Name = "Atualizar Brainrots",
-        Callback = LoadBrainrots
+    Tab:CreateToggle({
+        Name = "Auto Upgrade Speed",
+        Callback = Logic.ToggleUpgradeSpeed
     })
 
-Tab:CreateToggle({
-    Name = "Auto Upgrade Brainrot",
-    Callback = function(state)
-        if not state then
-            Logic.ToggleUpgrade(false, nil)
-            return
-        end
+    Tab:CreateToggle({
+        Name = "Auto Rebirth",
+        Callback = Logic.ToggleRebirth
+    })
 
-        if not selectedSlot then
-            warn("[Tsunami] Selecione um Brainrot primeiro")
+    Tab:CreateToggle({
+        Name = "Auto Upgrade Brainrot",
+        Callback = function(state)
+            if not state then
+               Logic.ToggleUpgrade(false, nil)
             return
-        end
+            end
+
+            if not selectedSlot then
+               warn("Selecione um Brainrot primeiro")
+            return
+            end
 
         Logic.ToggleUpgrade(true, selectedSlot)
     end
