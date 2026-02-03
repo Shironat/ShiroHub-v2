@@ -3,7 +3,7 @@ return function(Tab)
         game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua")
     )()
 
-    local brainrots = Logic.GetBrainrots() or {}
+    local brainrots = {}
     local selectedSlot = nil
     local BrainrotDropdown = nil
 
@@ -18,7 +18,7 @@ return function(Tab)
         selectedSlot = nil
 
         if BrainrotDropdown then
-            BrainrotDropdown:Set(options)
+            BrainrotDropdown:Refresh(options)
         end
         end
     end
