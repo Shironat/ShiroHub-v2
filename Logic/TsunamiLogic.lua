@@ -98,12 +98,13 @@ function TsunamiLogic.ResetBase()
     ResolverBase()
 end
 
+
+--
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
 local DANGER_DISTANCE = 80
@@ -113,6 +114,14 @@ local TWEEN_DURATION = 0.15
 local SAFE_ZONE_DISTANCE = 15
 local isTweening = false
 local lastCheck = 0
+local renderConn = nil
+
+
+local toggle = Instance.new("BoolValue")
+toggle.Name = "TsunamiEvadeToggle"
+toggle.Value = false
+toggle.Parent = LocalPlayer
+
 
 local function getSafeGaps()
     local gaps = {}
@@ -137,6 +146,7 @@ local function getSafeGaps()
     return gaps
 end
 
+
 local function isInSafeZone()
     local gaps = getSafeGaps()
     local playerPos = humanoidRootPart.Position
@@ -151,6 +161,7 @@ local function isInSafeZone()
     return false
 end
 
+
 local function fastTweenToSafety(targetPart)
     if isTweening then return end
     isTweening = true
@@ -164,6 +175,7 @@ local function fastTweenToSafety(targetPart)
         isTweening = false
     end)
 end
+
 
 local function findBestGap()
     local gaps = getSafeGaps()
@@ -202,6 +214,7 @@ local function findBestGap()
     return closest
 end
 
+
 local function getActiveWaveHitboxes()
     local hitboxes = {}
     local activeTsunamis = workspace:FindFirstChild("ActiveTsunamis")
@@ -216,39 +229,50 @@ local function getActiveWaveHitboxes()
     return hitboxes
 end
 
+
 function TsunamiLogic.TsunamiEvade()
-    RunService.RenderStepped:Connect(function(deltaTime)
-        local currentTime = tick()
-        if currentTime - lastCheck < CHECK_INTERVAL then return end
-        lastCheck = currentTime
-        
-        if not character or not character.Parent then
-            character = player.Character
-            if character then
-                humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-            else
-                return
-            end
-        end
-        
-        if isTweening then return end
-        local inSafe, safeName = isInSafeZone()
-        if inSafe then return end
-        
-        local waves = getActiveWaveHitboxes()
-        for _, wave in pairs(waves) do
-            local distance = (wave.hitbox.Position - humanoidRootPart.Position).Magnitude
-            if distance <= DANGER_DISTANCE then
-                local safeGap = findBestGap()
-                if safeGap then
-                    fastTweenToSafety(safeGap.part)
+    if renderConn then
+        renderConn:Disconnect()
+        renderConn = nil
+    end
+    
+    if toggle.Value then
+        renderConn = RunService.RenderStepped:Connect(function()
+            local currentTime = tick()
+            if currentTime - lastCheck < CHECK_INTERVAL then return end
+            lastCheck = currentTime
+            
+            if not character or not character.Parent then
+                character = player.Character
+                if character then
+                    humanoidRootPart = character:WaitForChild("HumanoidRootPart")
                 else
-                    warn("NO SAFE GAPS FOUND!")
+                    return
                 end
-                break
             end
-        end
-    end)
+            
+            if isTweening then return end
+            local inSafe, safeName = isInSafeZone()
+            if inSafe then return end
+            
+            local waves = getActiveWaveHitboxes()
+            for _, wave in pairs(waves) do
+                local distance = (wave.hitbox.Position - humanoidRootPart.Position).Magnitude
+                if distance <= DANGER_DISTANCE then
+                    local safeGap = findBestGap()
+                    if safeGap then
+                        fastTweenToSafety(safeGap.part)
+                    else
+                        warn("NO SAFE GAPS FOUND!")
+                    end
+                    break
+                end
+            end
+        end)
+    end
 end
+
+
+TsunamiLogic.Toggle = toggle
 
 return TsunamiLogic
