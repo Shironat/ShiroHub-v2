@@ -3,29 +3,15 @@ return function(Tab)
         "https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"
     ))()
 
-    local selectedSlot = nil
     local brainrots = {}
+    local selectedSlot = nil
     local BrainrotDropdown = nil
 
-        Tab:CreateButton({
-            Name = "Reset Base",
-            Callback = function()
-                Logic.ResetBase()
-                Logic.RefreshBrainrotDropdown()
-            end
-        })
-
-        Logic.RefreshBrainrotDropdown()
-
-        Tab:CreateToggle({
-            Name = "Auto Collect",
-            Callback = Logic.ToggleMoney
-        })
-
-        Tab:CreateToggle({
-            Name = "Auto Event Coins",
-            Callback = Logic.ToggleMoney
-        })
+    local function RefreshBrainrotDropdown()
+        if BrainrotDropdown then
+            BrainrotDropdown:Destroy()
+            BrainrotDropdown = nil
+        end
 
         brainrots = Logic.GetBrainrots()
         selectedSlot = nil
@@ -35,7 +21,7 @@ return function(Tab)
             table.insert(options, b.Name)
         end
 
-        Tab:CreateDropdown({
+        BrainrotDropdown = Tab:CreateDropdown({
             Name = "Selecionar Brainrot",
             Options = options,
             Callback = function(selected)
@@ -47,16 +33,40 @@ return function(Tab)
                 end
             end
         })
-
-        Tab:CreateToggle({
-            Name = "Auto Upgrade Brainrot",
-            Callback = function(state)
-                if selectedSlot then
-                    Logic.ToggleUpgrade(state, selectedSlot)
-                else
-                    warn("[Tsunami] Nenhum slot selecionado")
-                end
-            end
-        })
     end
+
+    Tab:CreateButton({
+        Name = "Reset Base",
+        Callback = function()
+            Logic.ResetBase()
+            RefreshBrainrotDropdown()
+        end
+    })
+
+    Tab:CreateToggle({
+        Name = "Auto Collect",
+        Callback = function(state)
+            Logic.ToggleMoney(state)
+        end
+    })
+
+    Tab:CreateToggle({
+        Name = "Auto Event Coins",
+        Callback = function(state)
+            Logic.ToggleMoney(state)
+        end
+    })
+
+    RefreshBrainrotDropdown()
+
+    Tab:CreateToggle({
+        Name = "Auto Upgrade Brainrot",
+        Callback = function(state)
+            if selectedSlot then
+                Logic.ToggleUpgrade(state, selectedSlot)
+            else
+                warn("[Tsunami] Nenhum Brainrot selecionado")
+            end
+        end
+    })
 end
