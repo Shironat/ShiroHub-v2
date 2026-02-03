@@ -11,11 +11,11 @@ return function(Tab)
             Name = "Reset Base",
             Callback = function()
                 Logic.ResetBase()
-                RefreshBrainrotDropdown()
+                Logic.RefreshBrainrotDropdown()
             end
         })
 
-        RefreshBrainrotDropdown()
+        Logic.RefreshBrainrotDropdown()
 
         Tab:CreateToggle({
             Name = "Auto Collect",
