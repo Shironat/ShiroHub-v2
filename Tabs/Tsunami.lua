@@ -57,6 +57,16 @@ return function(Tab)
         end
     })
 
+    Tab:CreateToggle({  
+        Name = "Auto Event Coins",  
+        Callback = function(enabled)  
+           pcall(function()  
+               Logic.ToggleMoney(enabled)  
+           end)  
+        end,  
+    })  
+
+
     Tab:CreateButton({
         Name = "Atualizar Brainrots",
         Callback = LoadBrainrots
