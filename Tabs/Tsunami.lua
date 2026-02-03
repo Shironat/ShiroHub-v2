@@ -20,6 +20,7 @@ return function(Tab)
                 Name = "Selecionar Brainrot",
                 Options = options,
                 Callback = function(selected)
+                    print("selecionado:", selected, "Slot:", selectedSlot)
                     selectedSlot = nil
                     for _, b in ipairs(brainrots) do
                         if b.Name == selected then
@@ -72,18 +73,20 @@ return function(Tab)
         Callback = LoadBrainrots
     })
 
-    Tab:CreateToggle({
-        Name = "Auto Upgrade Brainrot",
-        Callback = function(state)
-            if state then
-                if selectedSlot then
-                    Logic.ToggleUpgrade(true, selectedSlot)
-                else
-                    warn("[Tsunami] Nenhum slot selecionado")
-                end
-            else
-                Logic.ToggleUpgrade(false, nil)
-            end
+Tab:CreateToggle({
+    Name = "Auto Upgrade Brainrot",
+    Callback = function(state)
+        if not state then
+            Logic.ToggleUpgrade(false, nil)
+            return
         end
-    })
+
+        if not selectedSlot then
+            warn("[Tsunami] Selecione um Brainrot primeiro")
+            return
+        end
+
+        Logic.ToggleUpgrade(true, selectedSlot)
+    end
+})
 end
