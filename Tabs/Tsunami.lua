@@ -5,16 +5,13 @@ return function(Tab)
 
     local selectedSlot = nil
     local brainrots = {}
-
-    local function BuildUI()
-        Tab:Clear()
+    local BrainrotDropdown = nil
 
         Tab:CreateButton({
             Name = "Reset Base",
             Callback = function()
                 Logic.ResetBase()
-                task.wait(0.2)
-                BuildUI()
+                RefreshBrainrotDropdown()
             end
         })
 
@@ -60,6 +57,4 @@ return function(Tab)
             end
         })
     end
-
-    BuildUI()
 end
