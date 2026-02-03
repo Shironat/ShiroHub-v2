@@ -43,11 +43,6 @@ return function(Tab)
           table.insert(options, b.Name)
     end
 
-    print("Brainrots retornados:", #Logic.GetBrainrots())
-    for _, b in ipairs(Logic.GetBrainrots()) do
-       print("Brainrot encontrado:", b.Name, "slot", b.Slot)
-end
-
     Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
         Options = options,
