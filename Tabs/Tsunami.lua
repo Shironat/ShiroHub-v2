@@ -6,6 +6,13 @@ return function(Tab)
     print("Logic =", Logic)
     print("GetBrainrots =", Logic and Logic.GetBrainrots)
 
+    local options = {}
+    local selectedSlot = nil
+
+    for _, b in ipairs(brainrots) do
+        table.insert(options, b.Name)
+    end
+
     Tab:CreateButton({
         Name = "Reset Base",
         Callback = Logic.ResetBase
@@ -16,13 +23,6 @@ return function(Tab)
         Callback = Logic.ToggleMoney
     })
 
-
-    local options = {}
-    local selectedSlot = nil
-
-    for _, b in ipairs(brainrots) do
-        table.insert(options, b.Name)
-    end
 
     Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
