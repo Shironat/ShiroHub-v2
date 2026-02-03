@@ -36,21 +36,24 @@ return function(Tab)
         end,
     })
 
-    local selectedSlot = nil
-    local options = {}
     local brainrots = Logic.GetBrainrots()
-    for _, v in ipairs(brainrots) do
-        table.insert(options, v.Name .. " | slot " .. v.Slot)
+
+    local options = {}
+    for _, b in ipairs(brainrots) do
+        table.insert(options, b.Name)
     end
-    if #options > 0 then selectedSlot = brainrots[1].Slot end
+
+    local selectedSlot
 
     Tab:CreateDropdown({
-        Name = "Selecionar Brainrot",
+        Name = "Brainrot",
         Options = options,
-        CurrentOption = options[1],
-        Callback = function(option)
-            local slot = tonumber(option:match("slot (%d+)"))
-            selectedSlot = slot
+        Callback = function(opt)
+            for _, b in ipairs(brainrots) do
+                if b.Name == opt then
+                    selectedSlot = b.Slot
+                end
+            end
         end
     })
 
