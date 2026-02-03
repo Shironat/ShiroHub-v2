@@ -169,34 +169,6 @@ function TsunamiLogic.GetBrainrots()
     return result
 end
 
-local RefreshBrainrotDropdown()
-    if BrainrotDropdown then
-        BrainrotDropdown:Destroy()
-        BrainrotDropdown = nil
-    end
-
-    brainrots = Logic.GetBrainrots()
-    selectedSlot = nil
-
-    local options = {}
-    for _, b in ipairs(brainrots) do
-        table.insert(options, b.Name)
-    end
-
-    BrainrotDropdown = Tab:CreateDropdown({
-        Name = "Selecionar Brainrot",
-        Options = options,
-        Callback = function(selected)
-            for _, b in ipairs(brainrots) do
-                if b.Name == selected then
-                    selectedSlot = b.Slot
-                    break
-                end
-            end
-        end
-    })
-end
-
 function TsunamiLogic.UpgradeBrainrot(slotNumber)
     if not MinhaBase then
         if not ResolverBase() then return end
