@@ -1,9 +1,9 @@
 return function(Tab)
 
-    Dex = false,
-    Spy = false,
-    Ket = false,
-    Inf = false
+    local Dex = false,
+    local Spy = false,
+    local Ket = false,
+    local Inf = false
 
     -- Dex
     Tab:CreateButton({
@@ -12,7 +12,7 @@ return function(Tab)
             if Dex then return end
             loaded = true
             loadstring(game:HttpGet("https://nescoroco.lat/NDexV01.txt"))()
-    end
+        end
     })
 
     -- Ketamine
@@ -22,7 +22,7 @@ return function(Tab)
             if Ket then return end
             loaded = true
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Ketamine/refs/heads/main/Ketamine.lua"))()
-    end
+       end
     })
 
     -- SimpleSpy
@@ -32,7 +32,7 @@ return function(Tab)
             if Spy then return end
             loaded = true
                     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/78n/SimpleSpy/main/SimpleSpyBeta.lua"))()
-    end
+        end
     })
 
     -- Infinite Yield
@@ -42,7 +42,7 @@ return function(Tab)
             if Inf then return end
             loaded = true
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
-    end
+        end
     })
 
     -- Custom script
