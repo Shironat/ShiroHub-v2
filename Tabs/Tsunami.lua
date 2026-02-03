@@ -24,6 +24,11 @@ return function(Tab)
     })
 
 
+    Tab: CreateToggle((
+        Name Auto Event Coins",
+        Callback Logic. ToggleMoney
+    })
+
     Tab:CreateDropdown({
         Name = "Selecionar Brainrot",
         Options = options,
