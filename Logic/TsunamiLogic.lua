@@ -169,8 +169,7 @@ function TsunamiLogic.GetBrainrots()
     return result
 end
 
-local TsunamiLogic.RefreshBrainrotDropdown()
-    -- remove dropdown antigo
+local RefreshBrainrotDropdown()
     if BrainrotDropdown then
         BrainrotDropdown:Destroy()
         BrainrotDropdown = nil
