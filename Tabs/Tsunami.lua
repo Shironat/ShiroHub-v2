@@ -39,27 +39,21 @@ return function(Tab)
     local brainrots = Logic.GetBrainrots()
 
     local options = {}
-    for _, b in ipairs(brainrots) do
-        table.insert(options, b.Name)
+       for _, b in ipairs(brainrots) do
+          table.insert(options, b.Name)
     end
-
-    local selectedSlot
 
     print("Brainrots retornados:", #Logic.GetBrainrots())
     for _, b in ipairs(Logic.GetBrainrots()) do
-    print("Brainrot encontrado:", b.Name, "slot", b.Slot)
+       print("Brainrot encontrado:", b.Name, "slot", b.Slot)
 end
 
     Tab:CreateDropdown({
-        Name = "Brainrot",
+        Name = "Selecionar Brainrot",
         Options = options,
-        Callback = function(opt)
-            for _, b in ipairs(brainrots) do
-                if b.Name == opt then
-                    selectedSlot = b.Slot
-                end
-            end
-        end
+        Callback = function(selected)
+            Logic.SetSelectedBrainrot(selected)
+    end
     })
 
     Tab:CreateToggle({
