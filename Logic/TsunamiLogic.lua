@@ -223,9 +223,4 @@ function TsunamiLogic.ToggleUpgrade(state, slot)
     UpgradeSlot = slot
 end
 
-print("Brainrots encontrados:", #result)
-for _, b in ipairs(result) do
-    print("Slot:", b.Slot, "Brainrot:", b.Name)
-end
-
 return TsunamiLogic
