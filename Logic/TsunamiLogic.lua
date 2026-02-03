@@ -98,9 +98,6 @@ function TsunamiLogic.ResetBase()
     ResolverBase()
 end
 
-
---
-local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
@@ -116,20 +113,11 @@ local isTweening = false
 local lastCheck = 0
 local renderConn = nil
 
-
-local toggle = Instance.new("BoolValue")
-toggle.Name = "TsunamiEvadeToggle"
-toggle.Value = false
-toggle.Parent = LocalPlayer
-
-
 local function getSafeGaps()
     local gaps = {}
-    
     if not workspace:FindFirstChild("Misc") or not workspace.Misc:FindFirstChild("Gaps") then
         return gaps
     end
-    
     for _, gap in pairs(workspace.Misc.Gaps:GetChildren()) do
         for _, child in pairs(gap:GetChildren()) do
             if child:IsA("BasePart") then
@@ -142,51 +130,44 @@ local function getSafeGaps()
             end
         end
     end
-    
     return gaps
 end
-
 
 local function isInSafeZone()
     local gaps = getSafeGaps()
     local playerPos = humanoidRootPart.Position
-    
     for _, gap in pairs(gaps) do
-        local distance = (gap.position - playerPos).Magnitude
-        if distance <= SAFE_ZONE_DISTANCE then
+        if (gap.position - playerPos).Magnitude <= SAFE_ZONE_DISTANCE then
             return true, gap.name
         end
     end
-    
     return false
 end
-
 
 local function fastTweenToSafety(targetPart)
     if isTweening then return end
     isTweening = true
-    
+
     local targetPos = targetPart.Position + Vector3.new(0, TELEPORT_HEIGHT_OFFSET, 0)
     local tweenInfo = TweenInfo.new(TWEEN_DURATION, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
     local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(targetPos)})
-    
+
     tween:Play()
     tween.Completed:Connect(function()
         isTweening = false
     end)
 end
 
-
 local function findBestGap()
     local gaps = getSafeGaps()
     if #gaps == 0 then return nil end
-    
+
     local playerPosition = humanoidRootPart.Position
     local playerLookVector = humanoidRootPart.CFrame.LookVector
-    
+
     local closestBehind = nil
     local closestBehindDist = math.huge
-    
+
     for _, gap in pairs(gaps) do
         local directionToGap = (gap.position - playerPosition).Unit
         local dotProduct = playerLookVector:Dot(directionToGap)
@@ -198,9 +179,9 @@ local function findBestGap()
             end
         end
     end
-    
+
     if closestBehind then return closestBehind end
-    
+
     local closest = gaps[1]
     local closestDist = (closest.position - playerPosition).Magnitude
     for i = 2, #gaps do
@@ -210,10 +191,8 @@ local function findBestGap()
             closestDist = dist
         end
     end
-    
     return closest
 end
-
 
 local function getActiveWaveHitboxes()
     local hitboxes = {}
@@ -229,36 +208,34 @@ local function getActiveWaveHitboxes()
     return hitboxes
 end
 
-
-function TsunamiLogic.TsunamiEvade()
+function TsunamiLogic.TsunamiEvade(enabled)
     if renderConn then
         renderConn:Disconnect()
         renderConn = nil
     end
-    
-    if toggle.Value then
+
+    if enabled then
         renderConn = RunService.RenderStepped:Connect(function()
             local currentTime = tick()
             if currentTime - lastCheck < CHECK_INTERVAL then return end
             lastCheck = currentTime
-            
+
             if not character or not character.Parent then
-                character = player.Character
+                character = LocalPlayer.Character
                 if character then
                     humanoidRootPart = character:WaitForChild("HumanoidRootPart")
                 else
                     return
                 end
             end
-            
+
             if isTweening then return end
-            local inSafe, safeName = isInSafeZone()
+            local inSafe, _ = isInSafeZone()
             if inSafe then return end
-            
+
             local waves = getActiveWaveHitboxes()
             for _, wave in pairs(waves) do
-                local distance = (wave.hitbox.Position - humanoidRootPart.Position).Magnitude
-                if distance <= DANGER_DISTANCE then
+                if (wave.hitbox.Position - humanoidRootPart.Position).Magnitude <= DANGER_DISTANCE then
                     local safeGap = findBestGap()
                     if safeGap then
                         fastTweenToSafety(safeGap.part)
@@ -271,8 +248,5 @@ function TsunamiLogic.TsunamiEvade()
         end)
     end
 end
-
-
-TsunamiLogic.Toggle = toggle
 
 return TsunamiLogic
