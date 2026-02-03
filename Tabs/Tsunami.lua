@@ -13,11 +13,6 @@ return function(Tab)
         table.insert(options, b.Name)
     end
 
-    Tab:CreateButton({
-        Name = "Reset Base",
-        Callback = Logic.ResetBase
-    })
-
     Tab:CreateToggle({
         Name = "Auto Collect",
         Callback = Logic.ToggleMoney
