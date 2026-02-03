@@ -3,7 +3,7 @@ return function(Tab)
         "https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/TsunamiLogic.lua"
     ))()
 
-    Tab:CreateToggle({
+    Tab:CreateButton({
         Name = "Reset Base",
         Callback = function(_)
            if Logic and Logic.ResetBase then
