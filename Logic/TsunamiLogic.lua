@@ -164,28 +164,35 @@ RunService.RenderStepped:Connect(function(dt)
 end)
 
 function TsunamiLogic.GetBrainrots()
-    if not TsunamiLogic.MinhaBase then
-        return {}
-    end
-
     local result = {}
 
-    for _, model in ipairs(TsunamiLogic.MinhaBase:GetChildren()) do
-        if model:IsA("Model") then
-            local lower = model.Name:lower()
-            local slot = lower:match("slot (%d+) brainrot")
-            if slot then
-                table.insert(result, {
-                    Slot = tonumber(slot),
-                    Name = model.Name
-                })
+    local base = TsunamiLogic.ResolverBase()
+    if not base then
+        return result
+    end
+
+    for _, obj in ipairs(base:GetChildren()) do
+        if obj:IsA("Model") then
+            local lowerName = obj.Name:lower()
+            local slotNumber = lowerName:match("slot (%d+) brainrot")
+
+            if slotNumber then
+                -- procura models dentro do slot
+                for _, child in ipairs(obj:GetChildren()) do
+                    if child:IsA("Model") then
+                        table.insert(result, {
+                            Slot = tonumber(slotNumber),
+                            Name = child.Name
+                        })
+                        break -- só 1 brainrot por slot
+                    end
+                end
             end
         end
     end
 
     return result
 end
-
 function TsunamiLogic.UpgradeBrainrot(slotNumber)
     if not TsunamiLogic.MinhaBase then
         if not TsunamiLogic.ResolverBase() then return end
@@ -216,5 +223,9 @@ function TsunamiLogic.ToggleUpgrade(state, slot)
     UpgradeSlot = slot
 end
 
+print("Brainrots encontrados:", #result)
+for _, b in ipairs(result) do
+    print("Slot:", b.Slot, "Brainrot:", b.Name)
+end
 
 return TsunamiLogic
