@@ -15,6 +15,8 @@ return function(Tab)
             end
         })
 
+        RefreshBrainrotDropdown()
+
         Tab:CreateToggle({
             Name = "Auto Collect",
             Callback = Logic.ToggleMoney
