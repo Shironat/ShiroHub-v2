@@ -10,10 +10,20 @@ return function(Tab)
         end
     })
 
-    -- Custom script
+        -- Custom script
     Tab:CreateInput({
-        Name = "Custom script here...",
-        Callback = function()
+        Name = "Custom",
+        PlaceholderText = "Custom Script",
+        RemoveTextAfterFocusLost = false,
+        Callback = function(inputText)
+            if inputText and inputText ~= "" then
+                local success, err = pcall(function()
+                    loadstring(inputText)()
+                end)
+                if not success then
+                    warn("Erro ao executar"..tostring(err))
+                end
+            end
         end
     })
 end
