@@ -1,12 +1,14 @@
 return function(Tab)
+    -- Cria uma seção vazia para adicionar o terminal
+    local Section = Tab:CreateSection("Logs Terminal")
+
     local ScrollingFrame = Instance.new("ScrollingFrame")
-    ScrollingFrame.Size = UDim2.new(1, 0, 0.8, 0)
-    ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
+    ScrollingFrame.Size = UDim2.new(1, 0, 0, 200)
     ScrollingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     ScrollingFrame.BorderSizePixel = 0
     ScrollingFrame.CanvasSize = UDim2.new(0, 0, 5, 0)
     ScrollingFrame.ScrollBarThickness = 6
-    ScrollingFrame.Parent = Tab:GetContentFrame() -- Adiciona na aba
+    ScrollingFrame.Parent = Section -- <- importante: adiciona na Section
 
     local UIListLayout = Instance.new("UIListLayout")
     UIListLayout.Parent = ScrollingFrame
