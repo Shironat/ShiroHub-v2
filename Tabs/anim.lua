@@ -1,6 +1,6 @@
 return function(Tab)
 
-    local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/animLogic.lua"))()
+    local Logic = loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Logic/AnimLogic.lua"))()
 
     Tab:CreateToggle({
         Name = "Auto TP",
