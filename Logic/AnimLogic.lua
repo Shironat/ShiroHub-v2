@@ -110,6 +110,7 @@ local function stop()
     running = false
 end
 
+print("[DEBUG] Nada de errado antes do return")
 return {
     Start = start,
     Stop = stop
