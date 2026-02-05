@@ -12,4 +12,5 @@ return function(Tab)
                 Logic.Stop()
             end
         end
-        })
+})
+end
