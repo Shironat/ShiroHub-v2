@@ -28,7 +28,7 @@ print("INJECT: 200[OK]")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Tsunami)
 print("TSUNAMI: 200[OK]")
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/anim.lua"))()(Tabs.Tsunami)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/anim.lua"))()(Tabs.Test)
 print("Test: 200[OK]")
 
 
