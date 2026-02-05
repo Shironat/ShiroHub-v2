@@ -14,6 +14,7 @@ local Tabs = {}
 Tabs.Exploits = Window:CreateTab("Exploits")
 Tabs.Inject   = Window:CreateTab("Injection")
 Tabs.Tsunami  = Window:CreateTab("Tsunami")
+Tabs.Test     = Window:CreateTab("Test")
 
 assert(Tabs.Tsunami, "Tab Tsunami não existe")
 print("Carregadando módulos...")
@@ -26,5 +27,9 @@ print("INJECT: 200[OK]")
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/Tsunami.lua"))()(Tabs.Tsunami)
 print("TSUNAMI: 200[OK]")
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Shironat/ShiroHub-v2/main/Tabs/anim.lua"))()(Tabs.Tsunami)
+print("Test: 200[OK]")
+
 
 print("ShiroHub carregado!")
