@@ -25,7 +25,7 @@ local function getHRP()
     return char:WaitForChild("HumanoidRootPart")
 end
 
--- Descobre GAP atual via Mud
+-- GAP atual (via Mud)
 local function getCurrentGap()
     local hrp = getHRP()
     for _, gap in ipairs(GapsFolder:GetChildren()) do
@@ -38,7 +38,7 @@ local function getCurrentGap()
     end
 end
 
--- Descobre SECTION atual do jogador
+-- SECTION atual
 local function getCurrentSection()
     local hrp = getHRP()
     for _, section in ipairs(SectionFolder:GetChildren()) do
@@ -50,11 +50,11 @@ local function getCurrentSection()
     end
 end
 
--- Verifica se há tsunami dentro da Section
+-- Tsunami na Section?
 local function sectionHasTsunami(section)
     for _, tsunami in ipairs(TsunamiFolder:GetChildren()) do
         if tsunami:IsA("Model") then
-            local cf, size = tsunami:GetBoundingBox()
+            local cf, _ = tsunami:GetBoundingBox()
             if (cf.Position - section.Position).Magnitude <= (section.Size.Magnitude / 2) then
                 return true
             end
@@ -63,7 +63,7 @@ local function sectionHasTsunami(section)
     return false
 end
 
--- Próximo gap
+-- Próximo Gap
 local function getNextGap(currentGap)
     for i, name in ipairs(GAP_ORDER) do
         if currentGap.Name == name then
@@ -87,12 +87,15 @@ local function teleportToGap(gap)
     print("[TP]", gap.Name, "-", GAP_NAMES[gap.Name])
 end
 
--- Loop principal
+-- ===== LOOP PRINCIPAL =====
+
 local running = false
+local lastGapProcessed = nil
 
 local function start()
     if running then return end
     running = true
+    lastGapProcessed = nil
 
     task.spawn(function()
         while running do
@@ -101,16 +104,23 @@ local function start()
             local currentGap = getCurrentGap()
             if not currentGap then continue end
 
+            -- 🔒 BLOQUEIO DE LOOP
+            if lastGapProcessed == currentGap then
+                continue
+            end
+
             local section = getCurrentSection()
             if not section then continue end
 
             if sectionHasTsunami(section) then
+                print("[BLOCK] Tsunami na Section:", section.Name)
                 continue
             end
 
             local nextGap = getNextGap(currentGap)
             if nextGap then
                 teleportToGap(nextGap)
+                lastGapProcessed = currentGap
             end
         end
     end)
@@ -118,6 +128,7 @@ end
 
 local function stop()
     running = false
+    lastGapProcessed = nil
 end
 
 return {
