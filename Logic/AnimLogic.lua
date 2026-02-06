@@ -1,3 +1,5 @@
+-- TsunamiGapLogic.lua
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -11,36 +13,19 @@ local GAP_ORDER = {
 }
 
 local GAP_NAMES = {
-    Gap1 = "Common",
-    Gap2 = "Uncommon",
-    Gap3 = "Rare",
-    Gap4 = "Epic",
-    Gap5 = "Legendary",
-    Gap6 = "Mythical",
-    Gap7 = "Cosmic",
-    Gap8 = "Secret",
-    Gap9 = "Celestial"
+    Gap1="Common", Gap2="Uncommon", Gap3="Rare", Gap4="Epic",
+    Gap5="Legendary", Gap6="Mythical", Gap7="Cosmic",
+    Gap8="Secret", Gap9="Celestial"
 }
+
+print("[Logic] TsunamiGapLogic carregado")
 
 local function getHRP()
     local char = player.Character or player.CharacterAdded:Wait()
     return char:WaitForChild("HumanoidRootPart")
 end
 
--- Verifica se uma tsunami está dentro de um section
-local function sectionHasTsunami(section)
-    for _, tsunami in ipairs(TsunamiFolder:GetChildren()) do
-        if tsunami:IsA("Model") then
-            local cf, size = tsunami:GetBoundingBox()
-            if (cf.Position - section.Position).Magnitude <= (section.Size.Magnitude / 2) then
-                return true
-            end
-        end
-    end
-    return false
-end
-
--- Descobre em qual GAP o jogador está (usando Mud)
+-- Descobre GAP atual via Mud
 local function getCurrentGap()
     local hrp = getHRP()
     for _, gap in ipairs(GapsFolder:GetChildren()) do
@@ -53,7 +38,32 @@ local function getCurrentGap()
     end
 end
 
--- Retorna o próximo gap
+-- Descobre SECTION atual do jogador
+local function getCurrentSection()
+    local hrp = getHRP()
+    for _, section in ipairs(SectionFolder:GetChildren()) do
+        if section:IsA("BasePart") then
+            if (hrp.Position - section.Position).Magnitude <= (section.Size.Magnitude / 2) then
+                return section
+            end
+        end
+    end
+end
+
+-- Verifica se há tsunami dentro da Section
+local function sectionHasTsunami(section)
+    for _, tsunami in ipairs(TsunamiFolder:GetChildren()) do
+        if tsunami:IsA("Model") then
+            local cf, size = tsunami:GetBoundingBox()
+            if (cf.Position - section.Position).Magnitude <= (section.Size.Magnitude / 2) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- Próximo gap
 local function getNextGap(currentGap)
     for i, name in ipairs(GAP_ORDER) do
         if currentGap.Name == name then
@@ -62,27 +72,28 @@ local function getNextGap(currentGap)
     end
 end
 
--- Teleporte SEGURO (linha reta, sem soma incremental)
+-- Teleporte seguro
 local function teleportToGap(gap)
     local hrp = getHRP()
     local mud = gap:FindFirstChild("Mud")
     if not mud then return end
 
-    local targetPos = Vector3.new(
+    hrp.CFrame = CFrame.new(
         mud.Position.X,
         mud.Position.Y + 5,
         mud.Position.Z
     )
 
-    hrp.CFrame = CFrame.new(targetPos)
-    print("[TP] Gap:", gap.Name, "-", GAP_NAMES[gap.Name])
+    print("[TP]", gap.Name, "-", GAP_NAMES[gap.Name])
 end
 
 -- Loop principal
 local running = false
 
 local function start()
+    if running then return end
     running = true
+
     task.spawn(function()
         while running do
             task.wait(0.5)
@@ -90,11 +101,11 @@ local function start()
             local currentGap = getCurrentGap()
             if not currentGap then continue end
 
-            local section = SectionFolder:FindFirstChild(currentGap.Name)
+            local section = getCurrentSection()
             if not section then continue end
 
             if sectionHasTsunami(section) then
-                print("[BLOCK] Tsunami no Section:", section.Name)
+                print("[BLOCK] Tsunami na Section:", section.Name)
                 continue
             end
 
@@ -110,7 +121,6 @@ local function stop()
     running = false
 end
 
-print("[DEBUG] Nada de errado antes do return")
 return {
     Start = start,
     Stop = stop
