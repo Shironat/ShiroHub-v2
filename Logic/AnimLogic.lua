@@ -105,7 +105,6 @@ local function start()
             if not section then continue end
 
             if sectionHasTsunami(section) then
-                print("[BLOCK] Tsunami na Section:", section.Name)
                 continue
             end
 
