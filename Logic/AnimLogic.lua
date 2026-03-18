@@ -1,5 +1,3 @@
--- TsunamiGapLogic.lua
-
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -63,7 +61,6 @@ local function sectionHasTsunami(section)
     return false
 end
 
--- Próximo Gap
 local function getNextGap(currentGap)
     for i, name in ipairs(GAP_ORDER) do
         if currentGap.Name == name then
@@ -72,7 +69,6 @@ local function getNextGap(currentGap)
     end
 end
 
--- Teleporte seguro
 local function teleportToGap(gap)
     local hrp = getHRP()
     local mud = gap:FindFirstChild("Mud")
@@ -86,8 +82,6 @@ local function teleportToGap(gap)
 
     print("[TP]", gap.Name, "-", GAP_NAMES[gap.Name])
 end
-
--- ===== LOOP PRINCIPAL =====
 
 local running = false
 local lastGapProcessed = nil
@@ -104,7 +98,6 @@ local function start()
             local currentGap = getCurrentGap()
             if not currentGap then continue end
 
-            -- 🔒 BLOQUEIO DE LOOP
             if lastGapProcessed == currentGap then
                 continue
             end
